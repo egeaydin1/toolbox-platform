@@ -32,7 +32,13 @@ def index():
 @app.route('/api/video-info', methods=['POST'])
 def get_video_info():
     try:
-        data = request.json
+        if not request.is_json:
+            return jsonify({'error': 'Content-Type must be application/json'}), 400
+            
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Invalid JSON data'}), 400
+            
         url = data.get('url')
         
         if not url:
@@ -41,24 +47,46 @@ def get_video_info():
         ydl_opts = {
             'quiet': True,
             'no_warnings': True,
+            'no_color': True,
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
+            
+            # Formatları al
+            formats = info.get('formats', [])
+            available_qualities = set()
+            for f in formats:
+                height = f.get('height')
+                if height:
+                    if height >= 1080:
+                        available_qualities.add('1080p')
+                    if height >= 720:
+                        available_qualities.add('720p')
+                    if height >= 480:
+                        available_qualities.add('480p')
             
             return jsonify({
                 'title': info.get('title', 'Bilinmeyen'),
                 'thumbnail': info.get('thumbnail', ''),
                 'duration': info.get('duration', 0),
                 'uploader': info.get('uploader', 'Bilinmeyen'),
+                'available_qualities': sorted(list(available_qualities), reverse=True),
             })
     except Exception as e:
+        print(f"Error in get_video_info: {str(e)}")
         return jsonify({'error': str(e)}), 400
 
 @app.route('/api/download', methods=['POST'])
 def download_video():
     try:
-        data = request.json
+        if not request.is_json:
+            return jsonify({'error': 'Content-Type must be application/json'}), 400
+            
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'Invalid JSON data'}), 400
+            
         url = data.get('url')
         format_type = data.get('format', 'video')
         quality = data.get('quality', 'best')
@@ -71,6 +99,8 @@ def download_video():
         ydl_opts = {
             'outtmpl': str(DOWNLOAD_FOLDER / f'{file_id}.%(ext)s'),
             'quiet': True,
+            'no_warnings': True,
+            'no_color': True,
         }
         
         if format_type == 'audio':
@@ -81,7 +111,9 @@ def download_video():
                 'preferredquality': '192',
             }]
         else:
-            if quality == '720p':
+            if quality == '1080p':
+                ydl_opts['format'] = 'bestvideo[height<=1080]+bestaudio/best[height<=1080]'
+            elif quality == '720p':
                 ydl_opts['format'] = 'bestvideo[height<=720]+bestaudio/best[height<=720]'
             elif quality == '480p':
                 ydl_opts['format'] = 'bestvideo[height<=480]+bestaudio/best[height<=480]'
@@ -103,6 +135,7 @@ def download_video():
         return jsonify({'error': 'Dosya bulunamadı'}), 500
         
     except Exception as e:
+        print(f"Error in download_video: {str(e)}")
         return jsonify({'error': str(e)}), 400
 
 @app.route('/api/download-file/<file_id>')

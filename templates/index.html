@@ -33,21 +33,77 @@
         </div>
     </section>
 
-    <section id="tools" class="tools-section">
+    <!-- Video Downloader Section -->
+    <section id="video-downloader" class="downloader-section">
         <div class="container">
-            <div class="tools-grid">
-                
-                <!-- Video Downloader Tool -->
-                <div class="tool-card" data-tool="video-downloader">
-                    <div class="tool-icon">🎬</div>
-                    <h3 class="tool-title">Video İndirici</h3>
-                    <p class="tool-description">YouTube ve diğer platformlardan video indirin</p>
-                    <button class="tool-button" onclick="openTool('video-downloader')">
-                        Kullan
-                        <span class="button-arrow">→</span>
-                    </button>
+            <div class="downloader-card">
+                <div class="downloader-header">
+                    <h2>🎬 Video İndirici</h2>
+                    <p>YouTube, Vimeo ve 1000+ platformdan video indirin</p>
                 </div>
 
+                <div class="downloader-body">
+                    <div class="input-group">
+                        <input type="text" id="video-url" placeholder="Video URL'sini buraya yapıştırın..." class="url-input">
+                        <button onclick="getVideoInfo()" class="btn-primary">
+                            <span class="btn-text">Bilgi Al</span>
+                            <span class="btn-loader"></span>
+                        </button>
+                    </div>
+
+                    <div id="video-info" class="video-info" style="display: none;">
+                        <div class="video-preview">
+                            <img id="video-thumbnail" src="" alt="Video thumbnail">
+                            <div class="video-details">
+                                <h3 id="video-title"></h3>
+                                <p id="video-uploader"></p>
+                                <p id="video-duration"></p>
+                            </div>
+                        </div>
+
+                        <div class="download-options">
+                            <div class="option-group">
+                                <label>Format</label>
+                                <div class="radio-group">
+                                    <label class="radio-label">
+                                        <input type="radio" name="format" value="video" checked>
+                                        <span>Video</span>
+                                    </label>
+                                    <label class="radio-label">
+                                        <input type="radio" name="format" value="audio">
+                                        <span>Sadece Ses (MP3)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="option-group" id="quality-group">
+                                <label>Kalite</label>
+                                <select id="quality-select" class="select-input">
+                                    <option value="best">En İyi Kalite</option>
+                                    <option value="1080p">1080p</option>
+                                    <option value="720p">720p</option>
+                                    <option value="480p">480p</option>
+                                </select>
+                            </div>
+
+                            <button onclick="downloadVideo()" class="btn-download">
+                                <span class="btn-text">İndir</span>
+                                <span class="btn-loader"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="download-status" class="download-status"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools" class="tools-section">
+        <div class="container">
+            <h2 class="section-title">Diğer Araçlar</h2>
+            <div class="tools-grid">
+                
                 <!-- Coming Soon Tools -->
                 <div class="tool-card coming-soon">
                     <div class="tool-icon">🖼️</div>
@@ -87,71 +143,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Video Downloader Modal -->
-    <div id="video-downloader-modal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            
-            <div class="modal-header">
-                <h2>🎬 Video İndirici</h2>
-                <p>YouTube, Vimeo ve 1000+ platformdan video indirin</p>
-            </div>
-
-            <div class="modal-body">
-                <div class="input-group">
-                    <input type="text" id="video-url" placeholder="Video URL'sini buraya yapıştırın..." class="url-input">
-                    <button onclick="getVideoInfo()" class="btn-primary">
-                        <span class="btn-text">Bilgi Al</span>
-                        <span class="btn-loader"></span>
-                    </button>
-                </div>
-
-                <div id="video-info" class="video-info" style="display: none;">
-                    <div class="video-preview">
-                        <img id="video-thumbnail" src="" alt="Video thumbnail">
-                        <div class="video-details">
-                            <h3 id="video-title"></h3>
-                            <p id="video-uploader"></p>
-                            <p id="video-duration"></p>
-                        </div>
-                    </div>
-
-                    <div class="download-options">
-                        <div class="option-group">
-                            <label>Format</label>
-                            <div class="radio-group">
-                                <label class="radio-label">
-                                    <input type="radio" name="format" value="video" checked>
-                                    <span>Video</span>
-                                </label>
-                                <label class="radio-label">
-                                    <input type="radio" name="format" value="audio">
-                                    <span>Sadece Ses (MP3)</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="option-group" id="quality-group">
-                            <label>Kalite</label>
-                            <select id="quality-select" class="select-input">
-                                <option value="best">En İyi Kalite</option>
-                                <option value="720p">720p</option>
-                                <option value="480p">480p</option>
-                            </select>
-                        </div>
-
-                        <button onclick="downloadVideo()" class="btn-download">
-                            <span class="btn-text">İndir</span>
-                            <span class="btn-loader"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <div id="download-status" class="download-status"></div>
-            </div>
-        </div>
-    </div>
 
     <footer class="footer">
         <div class="container">

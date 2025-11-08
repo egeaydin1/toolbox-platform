@@ -211,9 +211,54 @@ body::after {
     }
 }
 
+/* Downloader Section */
+.downloader-section {
+    padding: 50px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.downloader-card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: fadeInUp 0.8s ease;
+}
+
+.downloader-header {
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.downloader-header h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.downloader-header p {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+.downloader-body {
+    padding: 40px;
+}
+
 /* Tools Section */
 .tools-section {
     padding: 50px 0 100px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 40px;
+    color: var(--text);
 }
 
 .tools-grid {
@@ -319,87 +364,7 @@ body::after {
     font-size: 14px;
 }
 
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.3s;
-}
 
-.modal.active {
-    display: flex;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.modal-content {
-    background: var(--surface);
-    border-radius: 20px;
-    width: 90%;
-    max-width: 800px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    animation: slideUp 0.3s;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.modal-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: var(--text);
-    font-size: 32px;
-    cursor: pointer;
-    transition: transform 0.3s;
-    z-index: 1;
-}
-
-.modal-close:hover {
-    transform: rotate(90deg);
-}
-
-.modal-header {
-    padding: 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modal-header h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.modal-header p {
-    color: var(--text-secondary);
-}
-
-.modal-body {
-    padding: 40px;
-}
 
 .input-group {
     display: flex;
@@ -577,6 +542,11 @@ body::after {
 .download-status.error {
     background: rgba(239, 68, 68, 0.2);
     color: var(--error);
+}
+
+.download-status.info {
+    background: rgba(99, 102, 241, 0.2);
+    color: var(--primary);
 }
 
 /* Footer */

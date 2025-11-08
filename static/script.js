@@ -1,26 +1,5 @@
 let currentVideoUrl = '';
 
-function openTool(toolName) {
-    const modal = document.getElementById(`${toolName}-modal`);
-    if (modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-}
-
-function closeModal() {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        modal.classList.remove('active');
-    });
-    document.body.style.overflow = 'auto';
-    
-    // Reset form
-    document.getElementById('video-url').value = '';
-    document.getElementById('video-info').style.display = 'none';
-    document.getElementById('download-status').innerHTML = '';
-}
-
 async function getVideoInfo() {
     const urlInput = document.getElementById('video-url');
     const url = urlInput.value.trim();
@@ -48,6 +27,15 @@ async function getVideoInfo() {
         
         if (response.ok) {
             displayVideoInfo(data);
+            
+            // Kalite seçeneklerini güncelle
+            const qualitySelect = document.getElementById('quality-select');
+            if (data.available_qualities && data.available_qualities.length > 0) {
+                qualitySelect.innerHTML = '<option value="best">En İyi Kalite</option>';
+                data.available_qualities.forEach(q => {
+                    qualitySelect.innerHTML += `<option value="${q}">${q}</option>`;
+                });
+            }
         } else {
             showStatus(data.error || 'Bir hata oluştu', 'error');
         }
@@ -151,29 +139,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const formatRadios = document.querySelectorAll('input[name="format"]');
     const qualityGroup = document.getElementById('quality-group');
     
-    formatRadios.forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            if (e.target.value === 'audio') {
-                qualityGroup.style.display = 'none';
-            } else {
-                qualityGroup.style.display = 'block';
-            }
+    if (formatRadios && qualityGroup) {
+        formatRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'audio') {
+                    qualityGroup.style.display = 'none';
+                } else {
+                    qualityGroup.style.display = 'block';
+                }
+            });
         });
-    });
-    
-    // Modal dışına tıklandığında kapat
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
-    });
+    }
     
     // Enter tuşu ile video bilgisi al
-    document.getElementById('video-url').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            getVideoInfo();
-        }
-    });
+    const videoUrlInput = document.getElementById('video-url');
+    if (videoUrlInput) {
+        videoUrlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                getVideoInfo();
+            }
+        });
+    }
 });

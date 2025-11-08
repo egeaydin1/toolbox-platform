@@ -21,9 +21,70 @@ body {
     background: var(--background);
     color: var(--text);
     overflow-x: hidden;
+    position: relative;
 }
 
-/* Animated Stars Background */
+/* Animated Gradient Background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        #0f172a 0%, 
+        #1e1b4b 25%, 
+        #312e81 50%, 
+        #1e1b4b 75%, 
+        #0f172a 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    z-index: -2;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+    animation: floatingOrbs 25s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes floatingOrbs {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    33% {
+        transform: translate(30px, -30px) scale(1.1);
+        opacity: 0.8;
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+        opacity: 0.9;
+    }
+}
+
+/* Subtle particle effect */
 .stars, .stars2, .stars3 {
     position: fixed;
     top: 0;
@@ -31,26 +92,31 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
+    z-index: 0;
 }
 
 .stars {
-    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2"><circle cx="1" cy="1" r="1" fill="white" opacity="0.3"/></svg>') repeat;
-    animation: animateStars 50s linear infinite;
+    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="3" height="3"><circle cx="1.5" cy="1.5" r="0.5" fill="white" opacity="0.4"/></svg>') repeat;
+    animation: twinkle 3s ease-in-out infinite;
 }
 
 .stars2 {
-    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="3" height="3"><circle cx="1.5" cy="1.5" r="1" fill="white" opacity="0.2"/></svg>') repeat;
-    animation: animateStars 100s linear infinite;
+    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><circle cx="2" cy="2" r="0.6" fill="white" opacity="0.3"/></svg>') repeat;
+    animation: twinkle 4s ease-in-out infinite 1s;
 }
 
 .stars3 {
-    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><circle cx="2" cy="2" r="1" fill="white" opacity="0.1"/></svg>') repeat;
-    animation: animateStars 150s linear infinite;
+    background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="5" height="5"><circle cx="2.5" cy="2.5" r="0.7" fill="white" opacity="0.2"/></svg>') repeat;
+    animation: twinkle 5s ease-in-out infinite 2s;
 }
 
-@keyframes animateStars {
-    from { transform: translateY(0); }
-    to { transform: translateY(-2000px); }
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
 }
 
 .container {
@@ -165,6 +231,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
 .tool-card::before {
@@ -177,6 +244,7 @@ body {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     opacity: 0;
     transition: opacity 0.3s;
+    z-index: -1;
 }
 
 .tool-card:hover::before {
@@ -195,16 +263,22 @@ body {
 .tool-icon {
     font-size: 64px;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .tool-title {
     font-size: 24px;
     margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
 }
 
 .tool-description {
     color: var(--text-secondary);
     margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .tool-button {
@@ -219,6 +293,8 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    position: relative;
+    z-index: 2;
 }
 
 .tool-button:hover {

@@ -48,6 +48,9 @@ def get_video_info():
             'quiet': True,
             'no_warnings': True,
             'no_color': True,
+            'socket_timeout': 30,
+            'extractor_retries': 3,
+            'fragment_retries': 3,
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -101,6 +104,9 @@ def download_video():
             'quiet': True,
             'no_warnings': True,
             'no_color': True,
+            'socket_timeout': 30,
+            'extractor_retries': 3,
+            'fragment_retries': 3,
         }
         
         if format_type == 'audio':
@@ -149,4 +155,4 @@ def download_file(file_id):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=False)
